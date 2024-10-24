@@ -23,7 +23,12 @@ pipeline {
                 git branch: 'develop', url: "${REPO_URL}"
             }
       }
-        
+      stage ('SonarQube SAST Scan') { 
+        steps {
+               sh "/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=project-2-sonar -Dsonar.sources=synapse/ -Dsonar.host.url=http://127.0.0.1:9000 -Dsonar.login=sqa_692ffdbb7f191a24157882dbcb9c8cb0febe9f32"
+               sh "/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=project-2-sonar -Dsonar.sources=${SYNAPSE_DIR} -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_TOKEN}"
+           }  
+       }  
       stage ('Bandit SAST Scan') {
           steps {
              sh '''
@@ -45,11 +50,7 @@ pipeline {
               }
             }       
             
-      stage ('SonarQube SAST Scan') { 
-        steps {
-               sh "/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=project-2-sonar -Dsonar.sources=${SYNAPSE_DIR} -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_TOKEN}"
-           }  
-        }  
+        
       }
     
 }  
