@@ -21,15 +21,14 @@ pipeline {
             steps {
                 git branch: 'develop', url: "${REPO_URL}"
             }
-      }
-      stage ('SonarQube SAST Scan') { 
-        steps {
-               sh "/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=project-sonar -Dsonar.sources=. -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_TOKEN}"
-            }  
-        
-
-       }   
-        
+      }  
+      stage ('Bandit SAST Scan') {
+          steps {
+              
+              sh "bandit -r . -l >> bandit.txt"
+              
+            }       
+        }
       stage ('Semgrep SAST Scan') {
           steps {
               
@@ -40,16 +39,13 @@ pipeline {
                         error 'Semgrep found issues in the code.'
                     }
                 }
-            }
-              
-          }
-      //stage ('SonarQube SAST Scan') { 
-      //  steps {
-      //         sh "/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=project-sonar -Dsonar.sources=. -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_TOKEN}"
-      //      }  
-        
-
-      // }   
+            }       
+        }  
+      stage ('SonarQube SAST Scan') { 
+        steps {
+               sh "/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=project-sonar -Dsonar.sources=. -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_TOKEN}"
+           }  
+        }   
       }
     
 }  
