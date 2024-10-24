@@ -44,7 +44,7 @@ pipeline {
               //      }
               }
             }       
-          }  
+            
       stage ('SonarQube SAST Scan') { 
         steps {
                sh "/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=project-2-sonar -Dsonar.sources=${SYNAPSE_DIR} -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_TOKEN}"
