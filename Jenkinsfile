@@ -37,7 +37,7 @@ pipeline {
           }
       stage ('Semgrep SAST Scan') { 
         steps {
-               sonar-scanner   -Dsonar.projectKey=project-sonar   -Dsonar.sources=.   -Dsonar.host.url=${SONAR_URL}   -Dsonar.login=${SONAR_TOKEN}
+               sh "sonar-scanner -Dsonar.projectKey=project-sonar -Dsonar.sources=. -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_TOKEN}"
             }  
         
 
