@@ -27,7 +27,7 @@ pipeline {
       stage ('Bandit SAST Scan') {
           steps {
              sh '''
-                   bandit -r ${SYNAPSE_DIR} -f json -o bandit_report_2.json || true'
+                   bandit -r ${SYNAPSE_DIR} -f json -o bandit_report_2.json || true
                    cat bandit_report_2.json
               '''
         
@@ -36,7 +36,7 @@ pipeline {
       stage ('Semgrep SAST Scan') {
           steps {
               
-              sh "semgrep --config ${SEMGREP_CONFIG} ."
+              sh "semgrep --config ${SEMGREP_CONFIG} ${SYNAPSE_DIR}"
               //script {
               //      def semgrepResult = sh(script: 'semgrep --config=p/python . | tee semgrep-result.log | grep "ERROR" || true', returnStatus: true)
               //      if (semgrepResult != 0) {
