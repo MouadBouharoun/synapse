@@ -28,7 +28,7 @@ pipeline {
               
               script {
                   sh 'bandit -r ${SYNAPSE_DIR} -f json -o bandit_report.json || true'
-                  sh 'cat /var/lib/jenkins/bandit_report.json'
+                  sh 'cat bandit_report.json'
               }
               
             }       
