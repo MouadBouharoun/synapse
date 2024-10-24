@@ -13,5 +13,26 @@ pipeline {
          }
         
       }
-    }
+      stage('Checkout') {
+            steps {
+                git 'https://github.com/MouadBouharoun/synapse.git'
+            }
+      }
+        
+      stage ('Semgrep SAST Scan') {
+          steps {
+              sh 'pip install semgrep'
+              sh 'semgrep --config=p/python --json > semgrep-report.json'
+              script {
+                    def semgrepResult = sh(script: 'semgrep --config=p/python . | tee semgrep-result.log | grep "ERROR" || true', returnStatus: true)
+                    if (semgrepResult != 0) {
+                        error 'Semgrep found issues in the code.'
+                    }
+                }
+            }
+              
+          }
+      
+      }
+    
 }  
