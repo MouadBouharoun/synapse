@@ -22,6 +22,14 @@ pipeline {
                 git branch: 'develop', url: "${REPO_URL}"
             }
       }
+      stage ('SonarQube SAST Scan') { 
+        steps {
+               sh "/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=project-sonar -Dsonar.sources=. -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_TOKEN}"
+            }  
+        
+
+       }   
+        
       stage ('Semgrep SAST Scan') {
           steps {
               
@@ -35,13 +43,13 @@ pipeline {
             }
               
           }
-      stage ('SonarQube SAST Scan') { 
-        steps {
-               sh "sonar-scanner -Dsonar.projectKey=project-sonar -Dsonar.sources=. -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_TOKEN}"
-            }  
+      //stage ('SonarQube SAST Scan') { 
+      //  steps {
+      //         sh "/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=project-sonar -Dsonar.sources=. -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_TOKEN}"
+      //      }  
         
 
-       }   
+      // }   
       }
     
 }  
