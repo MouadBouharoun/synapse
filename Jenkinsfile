@@ -15,7 +15,7 @@ pipeline {
       }
       stage('Checkout') {
             steps {
-                git 'https://github.com/MouadBouharoun/synapse.git'
+                git 'https://github.com/MouadBouharoun/synapse.git' 
             }
       }
         
