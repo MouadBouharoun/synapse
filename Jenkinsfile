@@ -25,12 +25,11 @@ pipeline {
       }  
       stage ('Bandit SAST Scan') {
           steps {
-              
-              script {
-                  sh 'bandit -r ${SYNAPSE_DIR} -f json -o bandit_report.json || true'
-                  sh 'cat bandit_report.json'
-              }
-              
+             sh '''
+                   bandit -r ${SYNAPSE_DIR} -f json -o bandit_report.json || true'
+                   cat bandit_report.json
+              '''
+        
             }       
         }
       stage ('Semgrep SAST Scan') {
