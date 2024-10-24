@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         REPO_URL = 'https://github.com/MouadBouharoun/synapse.git'
-        SYNAPSE_DIR = '/home/mouad/synapse'
+        SYNAPSE_DIR = '/home/mouad/synapse/'
         SEMGREP_CONFIG = 'p/owasp-top-ten'  
         LOCAL_DIR = 'synapse'  
         SONAR_URL='http://127.0.0.1:9000'
