@@ -6,7 +6,7 @@ pipeline {
         SEMGREP_CONFIG = 'p/owasp-top-ten'  
         LOCAL_DIR = 'synapse'  
         SONAR_URL='http://127.0.0.1:9000'
-        SONAR_TOKEN='sqp_cfe71569d438c5732e20c87f7e38c14d6d2354f'
+        SONAR_TOKEN='sqa_692ffdbb7f191a24157882dbcb9c8cb0febe9f32'
     }
     stages {
       stage ('Initialise') {
@@ -22,7 +22,12 @@ pipeline {
             steps {
                 git branch: 'develop', url: "${REPO_URL}"
             }
-      }  
+      }
+      stage ('SonarQube SAST Scan') { 
+        steps {
+               sh "/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=project-2-sonar -Dsonar.sources=${SYNAPSE_DIR} -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_TOKEN}"
+           }  
+        }  
       stage ('Bandit SAST Scan') {
           steps {
              sh '''
@@ -44,11 +49,7 @@ pipeline {
                 }
             }       
         }  
-      stage ('SonarQube SAST Scan') { 
-        steps {
-               sh "/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=project-sonar -Dsonar.sources=. -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_TOKEN}"
-           }  
-        }   
+         
       }
     
 }  
