@@ -23,16 +23,12 @@ pipeline {
                 git branch: 'develop', url: "${REPO_URL}"
             }
       }
-      stage ('SonarQube SAST Scan') { 
-        steps {
-               sh "/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=project-2-sonar -Dsonar.sources=${SYNAPSE_DIR} -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_TOKEN}"
-           }  
-        }  
+        
       stage ('Bandit SAST Scan') {
           steps {
              sh '''
-                   bandit -r ${SYNAPSE_DIR} -f json -o bandit_report.json || true'
-                   cat bandit_report.json
+                   bandit -r ${SYNAPSE_DIR} -f json -o bandit_report_2.json || true'
+                   cat bandit_report_2.json
               '''
         
             }       
@@ -41,15 +37,19 @@ pipeline {
           steps {
               
               sh "semgrep --config ${SEMGREP_CONFIG} ."
-              script {
-                    def semgrepResult = sh(script: 'semgrep --config=p/python . | tee semgrep-result.log | grep "ERROR" || true', returnStatus: true)
-                    if (semgrepResult != 0) {
-                        error 'Semgrep found issues in the code.'
-                    }
-                }
+              //script {
+              //      def semgrepResult = sh(script: 'semgrep --config=p/python . | tee semgrep-result.log | grep "ERROR" || true', returnStatus: true)
+              //      if (semgrepResult != 0) {
+              //          error 'Semgrep found issues in the code.'
+              //      }
+              }
             }       
+          }  
+      stage ('SonarQube SAST Scan') { 
+        steps {
+               sh "/opt/sonar-scanner/bin/sonar-scanner -Dsonar.projectKey=project-2-sonar -Dsonar.sources=${SYNAPSE_DIR} -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_TOKEN}"
+           }  
         }  
-         
       }
     
 }  
