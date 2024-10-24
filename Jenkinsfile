@@ -1,9 +1,10 @@
 pipeline {    
     agent any
     environment {
-        REPO_URL = 'https://github.com/MouadBouharoun/synapse.git'  
-        SEMGREP_CONFIG = 'p/owasp-top-ten'  // Le profil Semgrep à utiliser
-        LOCAL_DIR = 'synapse'  // Dossier local où le dépôt sera cloné
+        REPO_URL = 'https://github.com/MouadBouharoun/synapse.git'
+        SYNAPSE_DIR = '/home/mouad/synapse'
+        SEMGREP_CONFIG = 'p/owasp-top-ten'  
+        LOCAL_DIR = 'synapse'  
         SONAR_URL='http://127.0.0.1:9000'
         SONAR_TOKEN='sqp_cfe71569d438c5732e20c87f7e38c14d6d2354f'
     }
@@ -25,7 +26,9 @@ pipeline {
       stage ('Bandit SAST Scan') {
           steps {
               
-              sh "bandit -r . -l >> bandit.txt"
+              script {
+                  sh 'bandit -r ${SYNAPSE_DIR} -f json -o bandit_report.json'
+              }
               
             }       
         }
